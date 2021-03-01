@@ -1,0 +1,18 @@
+nav{
+    background: linear-gradient(90deg, rgba(239,245,244,1) 0%, rgba(172,232,223,1) 51%, rgba(104,216,238,1) 100%);
+}
+
+.top{
+    z-index: 1;
+}
+
+.particles{
+    position: fixed;
+    left:0;
+    top:0;
+    bottom: 0;
+    right: 0;
+    height: 6rem;
+    width: 100%;
+    z-index: 0;
+}
