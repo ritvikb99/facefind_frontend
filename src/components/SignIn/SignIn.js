@@ -34,7 +34,8 @@ class SignIn extends React.Component {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data === 'success') {
+          if (data.id) {
+            this.props.loadUser(data);
             this.props.changeRoute('main');
           } else {
             this.setState({ problem: 'wrong-password' });

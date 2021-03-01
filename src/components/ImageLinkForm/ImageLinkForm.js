@@ -7,7 +7,7 @@ const ImageLinkForm = (props) => {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div className='br3 shadow-5' style={{ width: '50%' }}>
           <input type='text' className='mr3' style={{ width: '80%' }} onChange={props.onInputChange}></input>
-          <button className='grow link ph3 pv2 dib white bg-light-blue br3' onClick={props.onButtonSubmit}>
+          <button className='grow link ph3 pv2 dib white bg-light-blue br3' onClick={props.onPictureSubmit}>
             Detect
           </button>
         </div>

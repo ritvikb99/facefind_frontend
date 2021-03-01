@@ -21,8 +21,27 @@ class App extends Component {
       boxes: [],
       route: 'signin',
       isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: '',
+      },
     };
   }
+
+  loadUser = (user) => {
+    this.setState({
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        entries: user.entries,
+        joined: user.joined,
+      },
+    });
+  };
 
   calculateFaceBox = (data) => {
     let image = document.getElementById('inputImage');
@@ -43,12 +62,22 @@ class App extends Component {
   onInputChange = (event) => {
     this.setState({ input: event.target.value });
   };
-  onButtonSubmit = () => {
+  onPictureSubmit = () => {
     this.setState({ imageURL: this.state.input });
     app.models
       .predict('d02b4508df58432fbb84e800597b8959', this.state.input)
       .then((response) => {
-        console.log(response);
+        if (response) {
+          fetch('http://localhost:3000/image', {
+            method: 'put',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({ id: this.state.user.id }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              this.setState(Object.assign(this.state.user, { entries: data }));
+            });
+        }
         let boxes = [];
         for (let i = 0; i < response.outputs[0].data.regions.length; i++) {
           boxes.push(this.calculateFaceBox(response.outputs[0].data.regions[i].region_info.bounding_box));
@@ -71,15 +100,15 @@ class App extends Component {
       return (
         <div className='App'>
           <Navigation isSignedIn={this.state.isSignedIn} changeRoute={this.changeRoute} />
-          <SignIn changeRoute={this.changeRoute} />
+          <SignIn changeRoute={this.changeRoute} loadUser={this.loadUser} />
         </div>
       );
     } else if (this.state.route === 'main') {
       return (
         <div className='App'>
           <Navigation isSignedIn={this.state.isSignedIn} changeRoute={this.changeRoute} />
-          <Rank />
-          <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit} />
+          <Rank name={this.state.user.name} entries={this.state.user.entries} />
+          <ImageLinkForm onInputChange={this.onInputChange} onPictureSubmit={this.onPictureSubmit} />
           <FaceRecognition boxes={this.state.boxes} imageURL={this.state.imageURL} />
         </div>
       );
@@ -87,7 +116,7 @@ class App extends Component {
       return (
         <div className='App'>
           <Navigation isSignedIn={this.state.isSignedIn} changeRoute={this.changeRoute} />
-          <Register />
+          <Register changeRoute={this.changeRoute} loadUser={this.loadUser} />
         </div>
       );
     }

@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Rank = () => {
+const Rank = (props) => {
   return (
     <div className='mt4'>
-      <div className='black f3'> {'Your rank is....'} </div>
-      <div className='black f1'> {'#5'} </div>
+      <div className='black f3'> {`${props.name}, Your detection count is....`} </div>
+      <div className='black f1'> {props.entries} </div>
     </div>
   );
 };
