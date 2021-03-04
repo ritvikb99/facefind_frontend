@@ -43,13 +43,16 @@ class Register extends React.Component {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data) {
+          if (data === 'unable-to-register') {
+            this.setState({ displayMessage: 'unable-to-register' });
+          } else if (data === 'email-exists') {
+            this.setState({ displayMessage: 'email-exists' });
+          } else if (data) {
             this.setState({ displayMessage: 'success' });
             let list = document.getElementsByClassName('resetable');
             for (let element of list) {
               element.value = '';
             }
-            this.props.loadUser(data);
             setTimeout(() => {
               this.props.changeRoute('signin');
             }, 5000);
@@ -124,6 +127,10 @@ class Register extends React.Component {
                 <p style={{ color: 'red' }}>Please enter a password </p>
               ) : this.state.displayMessage === 'no-name' ? (
                 <p style={{ color: 'red' }}>Please enter your name </p>
+              ) : this.state.displayMessage === 'email-exists' ? (
+                <p style={{ color: 'red' }}>There is already an account with this email address.</p>
+              ) : this.state.displayMessage === 'unable-to-register' ? (
+                <p style={{ color: 'red' }}>Unable to register </p>
               ) : (
                 <p style={{ color: 'red' }}></p>
               )}
