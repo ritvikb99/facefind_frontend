@@ -32,7 +32,7 @@ class Register extends React.Component {
     } else if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.state.registerEmail)) {
       this.setState({ displayMessage: 'invalid-email' });
     } else {
-      fetch('http://localhost:3000/register', {
+      fetch('https://still-mountain-29865.herokuapp.com/register', {
         method: 'post',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({

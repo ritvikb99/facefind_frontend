@@ -83,7 +83,7 @@ class App extends Component {
       .predict('d02b4508df58432fbb84e800597b8959', this.state.input)
       .then((response) => {
         if (response) {
-          fetch('http://localhost:3000/image', {
+          fetch('https://still-mountain-29865.herokuapp.com/image', {
             method: 'put',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({ id: this.state.user.id }),
